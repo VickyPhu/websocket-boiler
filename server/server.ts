@@ -13,21 +13,36 @@ const io = new Server<
   SocketData
 >();
 
+type ChatMessage = {
+  id: string;
+  user: string;
+  text: string;
+  likes: number;
+};
+
 let guestIndex = 1;
 let handleLikes = 0;
-// let handleMessages: string[] = [];
+let messages: ChatMessage[] = [];
 
 io.on("connection", (socket) => {
-  console.log(`A user connected ` + socket.id);
-//Visa tidiagre mess från arrayen.
+  console.log(`A user connected: ${socket.id}`);
 
-  //Initaliaze user name
+  // Skicka tidigare meddelanden
+  socket.emit("chatHistory", messages);
+
   socket.data.name = "Guest" + guestIndex++;
   socket.emit("updateLikes", handleLikes);
 
   socket.on("setUsername", (username) => {
     socket.data.name = username;
-    socket.emit("message", `Welcome ${username}`);
+    const welcomeMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      user: "MSN",
+      text: `Welcome ${username}`,
+      likes: 0,
+    };
+    messages.push(welcomeMsg);
+    socket.emit("message", welcomeMsg);
   });
 
   socket.on("like", () => {
@@ -36,9 +51,26 @@ io.on("connection", (socket) => {
     io.emit("like");
   });
 
-  socket.on("sendMessage", (message) => {
-  //Spare mess i array
-    io.emit("message", `${socket.data.name}: ${message}`);
+  // ✅ Nytt meddelande
+  socket.on("sendMessage", (text) => {
+    const message: ChatMessage = {
+      id: crypto.randomUUID(),
+      user: socket.data.name,
+      text,
+      likes: 0,
+    };
+    messages.push(message);
+    io.emit("message", message);
+  });
+
+  // ✅ Gilla ett specifikt meddelande
+  socket.on("likeMessage", (id: string) => {
+    const msg = messages.find((m) => m.id === id);
+    if (msg) {
+      msg.likes++;
+      socket.emit("chatHistory", messages);
+      // io.emit("updateMessage", msg);
+    }
   });
 });
 

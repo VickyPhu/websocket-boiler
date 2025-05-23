@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ChatMessage } from "../../server/types";
 import { useLikes } from "./hooks/use-likes";
 import { socket } from "./socket";
 
@@ -13,16 +14,21 @@ export default function App() {
   const [username, setUsername] = useState("");
   const [registred, setRegistered] = useState(false);
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState<string[]>([]);
+  const [chat, setChat] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
-    socket.on("message", (message: string) => {
+    socket.on("message", (message: ChatMessage) => {
       setChat((prev) => [...prev, message]);
+    });
+
+    socket.on("chatHistory", (messages: ChatMessage[]) => {
+      setChat(messages);
     });
 
     return () => {
       socket.off("message");
       socket.off("updateLikes");
+      socket.off("chatHistory");
     };
   }, []);
   const handleRegister = () => {
@@ -62,8 +68,11 @@ export default function App() {
       <button onClick={sendLike}>Skicka ❤️</button>
 
       <div>
-        {chat.map((line, index) => (
-          <div key={index}>{line}</div>
+        {chat.map((line) => (
+          <div key={line.id}>
+            <strong>{line.user}</strong>
+            {line.text} {line.likes}
+          </div>
         ))}
 
         <input
