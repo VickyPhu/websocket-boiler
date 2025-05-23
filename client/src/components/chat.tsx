@@ -19,6 +19,7 @@ export default function Chat() {
       socket.off("updateLikes");
     };
   }, []);
+
   const sendMessage = () => {
     if (message === "") {
       alert("Skriv något i meddelandet");
@@ -30,25 +31,39 @@ export default function Chat() {
     socket.emit("sendMessage", message);
   };
 
+  const deleteMessage = (index: number) => {
+    setChat((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const sendLike = () => {
     socket.emit("like");
   };
 
   return (
     <>
-      <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
+      <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500 flex-wrap">
         {/* <Chat /> */}
-        <div className="flex flex-col w-300 max-w-md p-4 bg-white shadow m-6 rounded-lg">
+        <div className="flex basis-4/5 flex-col max-w-md p-4 bg-white shadow m-6 rounded-lg">
           <h1 className="text-center text-lg font-bold text-blue-400">
             Välkommen {username} till chatten!
           </h1>
-          <h2>Antal ❤️ {likes}</h2>
-          <button onClick={sendLike}>Skicka ❤️</button>
-
+          <div className="flex flex-col mr-auto">
+            <h2 className="bg-slate-300 px-2 py-1 rounded">Antal ❤️ {likes}</h2>
+            <button onClick={sendLike} className="bg-blue-400 text-white rounded px-2 py-1 hover:bg-blue-500 mt-1">
+              Skicka ❤️
+            </button>
+          </div>
           <div className="flex flex-col mt-4 overflow-y-auto h-96 mb-4 bg-gray-200 p-3 rounded-lg">
             {chat.map((line, index) => (
-              <div key={index} className="bg-white m-1 rounded-lg p-2">
+              <div key={index} className="bg-white m-1 rounded-lg p-2 flex">
                 {line}
+                <button
+                  onClick={() => deleteMessage(index)}
+                  className="bg-red-400 text-white rounded px-1 py-1 hover:bg-red-500 ml-auto"
+                  title="Ta bort meddelande"
+                >
+                  Ta bort
+                </button>
               </div>
             ))}
           </div>
