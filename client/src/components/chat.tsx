@@ -1,36 +1,56 @@
-
+import { useEffect, useState } from "react";
+import { useLikes } from "../hooks/use-likes";
+import { socket } from "../socket";
 
 export default function Chat() {
-    return (
-        <>
-        <div className="chat chat-start">
-  <div className="chat-bubble chat-bubble-primary">What kind of nonsense is this</div>
-</div>
-<div className="chat chat-start">
-  <div className="chat-bubble chat-bubble-secondary">
-    Put me on the Council and not make me a Master!??
-  </div>
-</div>
-<div className="chat chat-start">
-  <div className="chat-bubble chat-bubble-accent">
-    That's never been done in the history of the Jedi.
-  </div>
-</div>
-<div className="chat chat-start">
-  <div className="chat-bubble chat-bubble-neutral">It's insulting!</div>
-</div>
-<div className="chat chat-end">
-  <div className="chat-bubble chat-bubble-info">Calm down, Anakin.</div>
-</div>
-<div className="chat chat-end">
-  <div className="chat-bubble chat-bubble-success">You have been given a great honor.</div>
-</div>
-<div className="chat chat-end">
-  <div className="chat-bubble chat-bubble-warning">To be on the Council at your age.</div>
-</div>
-<div className="chat chat-end">
-  <div className="chat-bubble chat-bubble-error">It's never happened before.</div>
-</div>
-</>
-    )
+  const likes = useLikes();
+  const [username] = useState("");
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState<string[]>([]);
+
+  useEffect(() => {
+    socket.on("message", (message: string) => {
+      setChat((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off("message");
+      socket.off("updateLikes");
+    };
+  }, []);
+  const sendMessage = () => {
+    socket.emit("sendMessage", message);
+    setMessage("");
+  };
+
+  const sendLike = () => {
+    socket.emit("like");
+  };
+
+  return (
+    <>
+      <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
+        {/* <Chat /> */}
+        <div>
+          <h1>Välkommen {username}</h1>
+          <h2>Antal ❤️ {likes}</h2>
+          <button onClick={sendLike}>Skicka ❤️</button>
+
+          <div>
+            {chat.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+
+            <input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+
+            <button onClick={sendMessage}>Skicka ditt mess</button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

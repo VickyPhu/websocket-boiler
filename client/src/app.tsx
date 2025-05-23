@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
 import type { ChatMessage } from "../../server/types";
-import { useLikes } from "./hooks/use-likes";
-import { socket } from "./socket";
+import Chat from "./components/chat";
+import Register from "./components/register";
 
 // onUsernameSelection(username){
 //   this.usernameAlreadySelected = true;
@@ -10,79 +10,12 @@ import { socket } from "./socket";
 // }
 
 export default function App() {
-  const likes = useLikes();
-  const [username, setUsername] = useState("");
-  const [registred, setRegistered] = useState(false);
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState<ChatMessage[]>([]);
-
-  useEffect(() => {
-    socket.on("message", (message: ChatMessage) => {
-      setChat((prev) => [...prev, message]);
-    });
-
-    socket.on("chatHistory", (messages: ChatMessage[]) => {
-      setChat(messages);
-    });
-
-    return () => {
-      socket.off("message");
-      socket.off("updateLikes");
-      socket.off("chatHistory");
-    };
-  }, []);
-  const handleRegister = () => {
-    socket.emit("setUsername", username);
-    setRegistered(true);
-  };
-
-  const sendMessage = () => {
-    socket.emit("sendMessage", message);
-    setMessage("");
-  };
-
-  const sendLike = () => {
-    socket.emit("like");
-  };
-
-  if (!registred) {
-    return (
-      <div style={{ background: "tomato" }}>
-        <h1>Välkommen, skapa ett roligt användarnamn</h1>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ background: "antiquewhite" }}
-        />
-        <button onClick={handleRegister} style={{ color: "blue" }}>
-          Registrera dig här
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <h1>Välkommen {username}</h1>
-      <h2>Antal ❤️ {likes}</h2>
-      <button onClick={sendLike}>Skicka ❤️</button>
-
-      <div>
-        {chat.map((line) => (
-          <div key={line.id}>
-            <strong>{line.user}</strong>
-            {line.text} {line.likes}
-          </div>
-        ))}
-
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        />
-
-        <button onClick={sendMessage}>Skicka ditt mess</button>
-      </div>
-    </div>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Register />} />
+				<Route path="/chat" element={<Chat />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
