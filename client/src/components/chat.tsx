@@ -31,7 +31,7 @@ export default function Chat() {
     <>
       <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
         {/* <Chat /> */}
-        <div>
+        <div className="flex flex-col w-full max-w-md p-4 bg-white shadow m-15">
           <h1>Välkommen {username}</h1>
           <h2>Antal ❤️ {likes}</h2>
           <button onClick={sendLike}>Skicka ❤️</button>

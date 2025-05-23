@@ -1,17 +1,12 @@
-// components/side-panel-users.tsx
-import { useUsers } from "../hooks/useUsers";
+import { useUsername } from "../hooks/use-username";
 
 export default function SidePanelUsers() {
-  const users = useUsers();
+  const username = useUsername();
 
   return (
     <div style={{ width: "200px", background: "#eee", padding: "1rem" }}>
-      <h3>Användare</h3>
-      <ul>
-        {users.map((user, idx) => (
-          <li key={idx}>{user}</li>
-        ))}
-      </ul>
+      <h3>Du är inloggad som:</h3>
+      <p>{username}</p>
     </div>
   );
 }

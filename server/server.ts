@@ -15,19 +15,31 @@ const io = new Server<
 
 let guestIndex = 1;
 let handleLikes = 0;
+const users = new Map<string, { name: string; avatar: string }>();
 // let handleMessages: string[] = [];
 
 io.on("connection", (socket) => {
   console.log(`A user connected ` + socket.id);
-//Visa tidiagre mess från arrayen.
+  //Visa tidiagre mess från arrayen.
 
   //Initaliaze user name
   socket.data.name = "Guest" + guestIndex++;
+  socket.data.avatar = "/avatars/01.png";
+
+  users.set(socket.id, {
+    name: socket.data.name,
+    avatar: socket.data.avatar,
+  });
+
   socket.emit("updateLikes", handleLikes);
 
-  socket.on("setUsername", (username) => {
+  socket.on("setUsername", (username, avatar) => {
     socket.data.name = username;
+    socket.data.avatar = avatar;
+
+    users.set(socket.id, { name: username, avatar });
     socket.emit("message", `Welcome ${username}`);
+    socket.emit("userInfo", username);
   });
 
   socket.on("like", () => {
@@ -37,7 +49,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (message) => {
-  //Spare mess i array
+    //Spare mess i array
     io.emit("message", `${socket.data.name}: ${message}`);
   });
 });

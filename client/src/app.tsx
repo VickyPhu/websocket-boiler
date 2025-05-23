@@ -11,7 +11,7 @@ import SidePanelUsers from "./components/side-panel-users";
 export default function App() {
   return (
     <>
-      <div style={{ display: "flex", height: "100vh" }}>
+      <div>
         <Register />
         <Chat />
         <SidePanelUsers />
