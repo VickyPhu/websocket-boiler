@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLikes } from "../hooks/use-likes";
-import { useUsers } from "../hooks/use-users";
 import { socket } from "../socket";
 import SidePanelUsers from "./side-panel-users";
 
 export default function Chat() {
   const likes = useLikes();
-  const users = useUsers();
   const [username] = useState("");
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<string[]>([]);
@@ -40,14 +38,14 @@ export default function Chat() {
     <>
       <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
         {/* <Chat /> */}
-        <div className="flex flex-col w-full max-w-md p-4 bg-white shadow m-15 rounded-lg">
+        <div className="flex flex-col w-300 max-w-md p-4 bg-white shadow m-6 rounded-lg">
           <h1 className="text-center text-lg font-bold text-blue-400">
-            Välkommen {users.length}
+            Välkommen {username} till chatten!
           </h1>
           <h2>Antal ❤️ {likes}</h2>
           <button onClick={sendLike}>Skicka ❤️</button>
 
-          <div className="flex flex-col mt-4 overflow-y-auto h-96 mb-4 bg-gray-100 p-3 rounded-lg">
+          <div className="flex flex-col mt-4 overflow-y-auto h-96 mb-4 bg-gray-200 p-3 rounded-lg">
             {chat.map((line, index) => (
               <div key={index} className="bg-white m-1 rounded-lg p-2">
                 {line}

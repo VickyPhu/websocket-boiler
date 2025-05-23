@@ -4,7 +4,7 @@ export default function SidePanelUsers() {
   const users = useUsers();
 
   return (
-    <div style={{ width: "200px", background: "#f5f5f5", padding: "1rem" }}>
+    <div className="flex flex-col p-4 bg-white shadow m-6 rounded-lg w-100">
       <h3>Aktiva användare:</h3>
       <ul>
         {users.map((u, i) => (
