@@ -1,6 +1,6 @@
+import { BrowserRouter, Route, Routes } from "react-router";
 import Chat from "./components/chat";
 import Register from "./components/register";
-import SidePanelUsers from "./components/side-panel-users";
 
 // onUsernameSelection(username){
 //   this.usernameAlreadySelected = true;
@@ -9,14 +9,12 @@ import SidePanelUsers from "./components/side-panel-users";
 // }
 
 export default function App() {
-  return (
-    <>
-      <div style={{ display: "flex", height: "100vh" }}>
-        <Register />
-        <Chat />
-        <SidePanelUsers />
-        <div style={{ flex: 1, padding: "1rem" }}></div>
-      </div>
-    </>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Register />} />
+				<Route path="/chat" element={<Chat />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
