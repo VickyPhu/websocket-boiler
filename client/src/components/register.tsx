@@ -24,11 +24,13 @@ export default function Register() {
 	if (!registred) {
 		return (
 			<div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
-				<div className="p-4 rounded shadow-md bg-slate-200 max-w-sm flex flex-col gap-4 m-4">
-					<h1>Välkommen, skapa ett roligt användarnamn</h1>
+				<h1 className="text-3xl">Välkommen</h1>
+				<div className="p-6 rounded shadow-md bg-slate-200 max-w-sm flex flex-col gap-4 m-4 bg-gradient-to-br from-purple-400 to-purple-200 text-slate-800 ">
+					<h2>Skapa ett roligt användarnamn</h2>
 					<input
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
+						placeholder="Namn"
 						className="border-2 border-slate-300 p-2 rounded bg-slate-100"
 					/>
 
@@ -45,9 +47,10 @@ export default function Register() {
 							/>
 						))}
 					</div>
+
 					<button
 						onClick={handleRegister}
-						className="bg-slate-300 p-2 rounded hover:bg-slate-400 transition cursor-pointer"
+						className="bg-purple-500 text-slate-200 p-2 rounded hover:bg-slate-400 transition cursor-pointer"
 					>
 						Registrera dig här
 					</button>

@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import type { ChatMessage } from "../../server/types";
 import Chat from "./components/chat";
 import Register from "./components/register";
 

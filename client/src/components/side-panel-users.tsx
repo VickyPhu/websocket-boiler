@@ -1,12 +1,16 @@
-import { useUsername } from "../hooks/use-username";
+import { useUsers } from "../hooks/use-users";
 
 export default function SidePanelUsers() {
-  const username = useUsername();
+  const users = useUsers();
 
   return (
-    <div style={{ width: "200px", background: "#eee", padding: "1rem" }}>
-      <h3>Du är inloggad som:</h3>
-      <p>{username}</p>
+    <div style={{ width: "200px", background: "#f5f5f5", padding: "1rem" }}>
+      <h3>Aktiva användare:</h3>
+      <ul>
+        {users.map((u, i) => (
+          <li key={i}>{u.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -2,7 +2,8 @@ export interface ServerToClientEvents {
   message: (message: string) => void;
   updateLikes: (likeCount: number) => void;
   like: () => void;
-   userInfo: (username: string) => void;
+  users: (users: { name: string; avatar: string }[]) => void;
+  userInfo: (username: string) => void;
 }
 
 export interface ClientToServerEvents {
