@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import type { ChatMessage } from "../../server/types";
 import Chat from "./components/chat";
 import Register from "./components/register";
 
@@ -10,12 +9,12 @@ import Register from "./components/register";
 // }
 
 export default function App() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Register />} />
-				<Route path="/chat" element={<Chat />} />
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Register />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

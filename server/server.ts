@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
     users.set(socket.id, { name: username, avatar });
 
     socket.emit("message", `Welcome ${username}`);
-    socket.emit("userInfo", username);
+    socket.emit("userInfo", username, avatar);
     io.emit("users", Array.from(users.values())); // Skicka uppdaterad lista
   });
 

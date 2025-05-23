@@ -1,10 +1,9 @@
+// hooks/use-users.ts
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 
-type User = {
-  name: string;
-  avatar: string;
-};
+// 🟡 Ändra typen till objekt med name och avatar
+type User = { name: string; avatar: string };
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
