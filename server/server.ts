@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
 
   // Initiera gäst-användare med namn och avatar
   socket.data.name = "Guest" + guestIndex++;
-  socket.data.avatar = "/avatars/01.png";
+  socket.data.avatar = "/avatars/01.jpg";
 
   users.set(socket.id, {
     name: socket.data.name,

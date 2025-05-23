@@ -49,7 +49,10 @@ export default function Chat() {
           </h1>
           <div className="flex flex-col mr-auto">
             <h2 className="bg-slate-300 px-2 py-1 rounded">Antal ❤️ {likes}</h2>
-            <button onClick={sendLike} className="bg-blue-400 text-white rounded px-2 py-1 hover:bg-blue-500 mt-1">
+            <button
+              onClick={sendLike}
+              className="bg-blue-400 text-white rounded px-2 py-1 hover:bg-blue-500 mt-1"
+            >
               Skicka ❤️
             </button>
           </div>
