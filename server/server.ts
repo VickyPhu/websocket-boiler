@@ -13,6 +13,13 @@ const io = new Server<
   SocketData
 >();
 
+type ChatMessage = {
+  id: string;
+  user: string;
+  text: string;
+  likes: number;
+};
+
 let guestIndex = 1;
 let handleLikes = 0;
 
