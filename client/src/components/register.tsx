@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { socket } from "../socket";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [registred, setRegistered] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleRegister = () => {
     socket.emit("setUsername", username, "avatar");
     setRegistered(true);
+    navigate("/chat");
   };
 
   if (!registred) {
@@ -20,7 +24,10 @@ export default function Register() {
             onChange={(e) => setUsername(e.target.value)}
             className="border-2 border-slate-300 p-2 rounded bg-slate-100"
           />
-          <button onClick={handleRegister} className="bg-slate-300 p-2 rounded hover:bg-slate-400 transition cursor-pointer">
+          <button
+            onClick={handleRegister}
+            className="bg-slate-300 p-2 rounded hover:bg-slate-400 transition cursor-pointer"
+          >
             Registrera dig här
           </button>
         </div>
