@@ -27,10 +27,7 @@ export default function App() {
   const handleClick = () => socket.emit("like");
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
-      <ConnectLabel />
-      <Droplet onClick={handleClick}>{likes}</Droplet>
-
+    <div className="flex justify-center h-screen bg-gradient-to-br from-blue-200 to-blue-500">
             <Chat />
     </div>
   );
