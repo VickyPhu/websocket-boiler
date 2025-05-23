@@ -14,11 +14,32 @@ const io = new Server<
 >();
 
 let guestIndex = 1;
+let handleLikes = 0;
+// let handleMessages: string[] = [];
 
 io.on("connection", (socket) => {
   console.log(`A user connected ` + socket.id);
+//Visa tidiagre mess från arrayen.
+
+  //Initaliaze user name
   socket.data.name = "Guest" + guestIndex++;
-  socket.on("like", () => io.emit("like"));
+  socket.emit("updateLikes", handleLikes);
+
+  socket.on("setUsername", (username) => {
+    socket.data.name = username;
+    socket.emit("message", `Welcome ${username}`);
+  });
+
+  socket.on("like", () => {
+    handleLikes++;
+    io.emit("updateLikes", handleLikes);
+    io.emit("like");
+  });
+
+  socket.on("sendMessage", (message) => {
+  //Spare mess i array
+    io.emit("message", `${socket.data.name}: ${message}`);
+  });
 });
 
 io.listen(3000);
